@@ -1,0 +1,38 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    api 'com.google.auto.service:auto-service:1.0-rc2'
+    api 'com.squareup:javapoet:1.8.0'
+    api project(':scaffanno')
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+//ext {
+//    bintrayRepo = 'maven'
+//    bintrayName = 'smart_lib_compiler'                                //项目名字
+//
+//    publishedGroupId = 'com.mitnick.tannotour'                //GroupId,这个要别人引用的时候会用到，
+//    libraryName = 'smart_lib_compiler'                         //这个是项目名字
+//    artifact = 'smart_lib_compiler'                                   //artifactId，这个也是别人引用的时候，会用到，它要和Module名字一样
+//
+//    libraryDescription = 'compiler,use to deal the annotations for auto generated code'       //项目描述
+//
+//    siteUrl = 'https://github.com/tannotour/SmartUtlis'          //把项目分享到github后的项目地址
+//    gitUrl = 'https://github.com/tannotour/SmartUtlis.git'       //分享后的项目git地址
+//
+//    libraryVersion = '1.4'
+//    developerId = 'tannotour'                             //这个开发者id，自己写
+//    developerName = 'tannotour'                           //这个是开发者名字
+//    developerEmail = '897922356@qq.com'                    //开发者邮箱
+//
+//    licenseName = 'The Apache Software License, Version 2.0'     //开源协议
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

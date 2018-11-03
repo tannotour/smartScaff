@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tannotour.smartscaff">
+
+    <!--网络访问-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--写内存卡-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--读内存卡-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--电源锁权限-->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
+    <application
+        android:name=".MainApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".WorkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".TwoActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RoomActivity" />
+
+        <!--阵风科技-->
+        <activity android:name=".wind.WindTestActivity" />
+        <receiver
+            android:name=".wind.MyDeviceAdminReceiver"
+            android:description="@string/app_name"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/devices" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
