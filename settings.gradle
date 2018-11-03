@@ -1,0 +1,1 @@
+include ':app', ':scaffcompiler', ':scaffanno', ':scafflib', ':scaffcli'
