@@ -108,12 +108,25 @@ infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.remote(execute: suspend T.
  * 将异步任务绑定到UI的生命周期中
  * @param lifecycleOwner 生命周期提供者
  */
-infix fun Job?.attachLife(lifecycleOwner: LifecycleOwner){
+infix fun Job?.attachLife(lifecycleOwner: LifecycleOwner): Job?{
     if(this == null){
-        return
+        return null
     }
     val jobController = JobController(this, lifecycleOwner)
     lifecycleOwner.lifecycle.addObserver(jobController)
+    return this
+}
+
+/**
+ * 监听异步任务状态
+ * @param invokeOnCompletion 异步任务状态回调，若throwable为null则代表正常完成
+ */
+infix fun Job?.listen(invokeOnCompletion: (throwable: Throwable?) -> Unit){
+    this?.let { job ->
+        job.invokeOnCompletion {
+            invokeOnCompletion.invoke(it)
+        }
+    }
 }
 
 /**

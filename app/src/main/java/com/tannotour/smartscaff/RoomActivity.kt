@@ -57,10 +57,12 @@ class RoomActivity : AppCompatActivity(), LifecycleOwner {
 //        }
 
         val adapter = RoomUserAdapter(roomUserRecyclerView, roomUserSwipeRefreshLayout).observe(this)
-//
-//        RoomUser::class remote{
-//            login("18428323819", "123456")
-//        } attachLife this
+
+        RoomUser::class remote{
+            login("18428323819", "123456")
+        } attachLife this listen {
+            Toast.makeText(this, "${it ?: "登录任务正常完成"}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     val onChanged = fun(list: List<RoomUser>?){
