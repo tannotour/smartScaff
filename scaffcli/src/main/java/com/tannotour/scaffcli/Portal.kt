@@ -11,9 +11,7 @@ import android.support.v4.app.FragmentActivity
 import com.tannotour.scaffcli.db.DBHelper
 import com.tannotour.scaffcli.repository.RepositoryEntity
 import com.tannotour.scaffcli.repository.RepositoryHelper
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.*
 import kotlin.reflect.KClass
 
 /**
@@ -99,7 +97,12 @@ infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.remote(execute: suspend T.
         null
     }else{
         GlobalScope.launch{
-            repository.execute()
+            try {
+                repository.execute()
+            }catch (exception: Throwable){
+                exception.printStackTrace()
+                throw CancellationException(exception.message)
+            }
         }
     }
 }
@@ -122,8 +125,10 @@ infix fun Job?.attachLife(lifecycleOwner: LifecycleOwner): Job?{
  * @param invokeOnCompletion 异步任务状态回调，若throwable为null则代表正常完成
  */
 infix fun Job?.listen(invokeOnCompletion: (throwable: Throwable?) -> Unit){
-    this?.let { job ->
-        job.invokeOnCompletion {
+    if(this == null){
+        invokeOnCompletion.invoke(Throwable("未知错误"))
+    }else{
+        this.invokeOnCompletion {
             invokeOnCompletion.invoke(it)
         }
     }
@@ -136,7 +141,12 @@ infix fun Job?.listen(invokeOnCompletion: (throwable: Throwable?) -> Unit){
  */
 suspend infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.executeSyncSuspend(execute: suspend T.() -> R?): R?{
     val repository = RepositoryHelper.fetchRepositoryProvider(this)
-    return repository?.execute()
+    return try {
+        repository?.execute()
+    }catch (exception: Throwable){
+        exception.printStackTrace()
+        throw CancellationException(exception.message)
+    }
 }
 
 /**
@@ -146,5 +156,10 @@ suspend infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.executeSyncSuspend
  */
 infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.executeSync(execute: T.() -> R?): R?{
     val repository = RepositoryHelper.fetchRepositoryProvider(this)
-    return repository?.execute()
+    return try{
+        repository?.execute()
+    }catch (exception: Throwable){
+        exception.printStackTrace()
+        null
+    }
 }

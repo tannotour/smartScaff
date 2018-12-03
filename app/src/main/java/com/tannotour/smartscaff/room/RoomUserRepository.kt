@@ -30,19 +30,21 @@ class RoomUserRepository: Repository<RoomUserDao, RoomUserDataBase>(RoomUserData
         }
     }
 
+    @Throws
     override suspend fun login(phone: String, password: String) {
-        request(UserRepository.Service::class){
-            fetchUser(phone, password)
-        } filter {
-            isSuccessful
-        } operate {
-            for(i in 0 until 30){
-                val roomUser = RoomUser()
-                roomUser.userName = "${it?.data?.userName}"
-                roomUser.userPhone = "${it?.data?.phone}"
-                insert(roomUser)
-            }
-        }
+        throw Throwable("my throwable")
+//        request(UserRepository.Service::class){
+//            fetchUser(phone, password)
+//        } filter {
+//            isSuccessful
+//        } operate {
+//            for(i in 0 until 30){
+//                val roomUser = RoomUser()
+//                roomUser.userName = "${it?.data?.userName}"
+//                roomUser.userPhone = "${it?.data?.phone}"
+//                insert(roomUser)
+//            }
+//        }
     }
 
     override suspend fun insertRoomUser(requestedLoadSize: Int) {

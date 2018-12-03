@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".WorkActivity">
+        <activity android:name=".RoomActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +32,7 @@
 
         <activity android:name=".TwoActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".RoomActivity" />
+        <activity android:name=".WorkActivity" />
 
         <!--阵风科技-->
         <activity android:name=".wind.WindTestActivity" />

@@ -34,7 +34,7 @@ class PositionalDataSource<T>(
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<T>) {
         postState(params.requestedLoadSize, params.requestedStartPosition, PagingState.STATE.LOADING)
-        var data: List<T>? = loadLocal(params.requestedLoadSize, 0) ?: return
+        var data: List<T>? = loadLocal(params.requestedLoadSize, 0) ?: ArrayList<T>()
         if(data!!.size < params.requestedLoadSize){
             loadRemote(params.requestedLoadSize - data.size)
             data = loadLocal(params.requestedLoadSize, 0)
@@ -50,7 +50,7 @@ class PositionalDataSource<T>(
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<T>) {
         postState(params.loadSize, params.startPosition, PagingState.STATE.LOADING)
-        var data: List<T>? = loadLocal(params.loadSize, params.startPosition) ?: return
+        var data: List<T>? = loadLocal(params.loadSize, params.startPosition) ?: ArrayList<T>()
         if(data!!.size < params.loadSize){
             loadRemote(params.loadSize - data.size)
             data = loadLocal(params.loadSize, params.startPosition)

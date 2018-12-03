@@ -61,7 +61,9 @@ class RoomActivity : AppCompatActivity(), LifecycleOwner {
         RoomUser::class remote{
             login("18428323819", "123456")
         } attachLife this listen {
-            Toast.makeText(this, "${it ?: "登录任务正常完成"}", Toast.LENGTH_SHORT).show()
+            runOnUiThread {
+                Toast.makeText(this, "${it ?: "登录任务正常完成"}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

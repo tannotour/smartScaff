@@ -8,6 +8,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import android.arch.persistence.room.RoomDatabase
 import android.support.v4.app.FragmentActivity
+import kotlinx.coroutines.experimental.CancellationException
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
@@ -100,8 +101,21 @@ infix fun <T: Any, R> KClass<out RepositoryEntity<T>>.remote(execute: suspend T.
         null
     }else{
         GlobalScope.launch{
-            repository.execute()
+            try {
+                repository.execute()
+            }catch (exception: Throwable){
+                exception.printStackTrace()
+                throw CancellationException("CancellationException")
+            }
         }
+//        try {
+//            GlobalScope.launch{
+//                repository.execute()
+//            }
+//        }catch (e: Throwable){
+//            e.printStackTrace()
+//            null
+//        }
     }
 }
 
@@ -123,8 +137,10 @@ infix fun Job?.attachLife(lifecycleOwner: LifecycleOwner): Job?{
  * @param invokeOnCompletion 异步任务状态回调，若throwable为null则代表正常完成
  */
 infix fun Job?.listen(invokeOnCompletion: (throwable: Throwable?) -> Unit){
-    this?.let { job ->
-        job.invokeOnCompletion {
+    if(this == null){
+        invokeOnCompletion.invoke(Throwable("任务为空，终止任务执行"))
+    }else{
+        this.invokeOnCompletion {
             invokeOnCompletion.invoke(it)
         }
     }
