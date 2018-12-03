@@ -36,7 +36,7 @@ abstract class PagingAdapter<T>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val display = displayItemMap[holder.itemViewType]
-        display?.invoke(holder.itemView, position, item)
+        display?.invoke(holder.itemView, position, item, false)
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class PagingAdapter<T>(
                     payload = getItem(position)
                 }
                 val display = displayItemMap[holder.itemViewType]
-                display?.invoke(holder.itemView, position, payload)
+                display?.invoke(holder.itemView, position, payload, true)
             }
         }
     }
@@ -106,7 +106,7 @@ abstract class PagingAdapter<T>(
     /* itemType映射到layoutId */
     abstract val layoutIdMap: HashMap<Int, Int>
     /* itemType映射到更新UI函数 */
-    abstract val displayItemMap: HashMap<Int, (itemView: View, position: Int, item: T?) -> Unit>
+    abstract val displayItemMap: HashMap<Int, (itemView: View, position: Int, item: T?, isPayload: Boolean) -> Unit>
 
     /* 加载本地数据 */
     open val loadLocal: (requestedLoadSize: Int, requestedStartPosition: Int) -> List<T>? = { _, _ -> ArrayList<T>() }
