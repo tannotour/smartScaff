@@ -10,7 +10,7 @@ import java.io.IOException
  * Description 错误重试拦截器
  * @param maxRetry 最大重试次数
  */
-class RetryIntercepter(private var maxRetry: Int = 3): Interceptor {
+class RetryInterceptor(private var maxRetry: Int = 3): Interceptor {
 
     private var retryNum = 1
 
@@ -24,6 +24,7 @@ class RetryIntercepter(private var maxRetry: Int = 3): Interceptor {
             Thread.sleep((500*retryNum).toLong())
             response = chain.proceed(request)
         }
+        retryNum = 1
         return response
     }
 }

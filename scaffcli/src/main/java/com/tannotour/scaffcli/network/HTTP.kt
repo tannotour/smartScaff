@@ -26,7 +26,7 @@ object HTTP{
     }
 
     private val okHttpClient: OkHttpClient by lazy {
-        val builder = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).addInterceptor(RetryIntercepter())
+        val builder = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).addInterceptor(RetryInterceptor())
         interceptorSet.forEach { builder.addInterceptor(it) }
         interceptorSet.clear()
         builder.cookieJar(cookieJar)
